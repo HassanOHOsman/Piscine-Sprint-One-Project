@@ -5,6 +5,7 @@
 // You can't open the index.html file using a file:// URL.
 
 import { getUserIds } from "./common.mjs";
+import { getData } from "./storage.mjs";
 
 window.onload = function () {
   const users = getUserIds();
@@ -13,6 +14,7 @@ window.onload = function () {
   //create user drop-down list
   const selectUserElm = document.createElement("select");
   selectUserElm.id = "userSelect";
+  //Add user drop-down list to Body
   document.body.appendChild(selectUserElm);
 
   //create user-select placeholder
@@ -31,4 +33,34 @@ window.onload = function () {
     selectOption.innerText = `User ${index + 1}`;
     selectUserElm.appendChild(selectOption);
   });
+
+  //Create User Agenda Section
+
+  const userAgendaSection = document.createElement("div");
+  userAgendaSection.id = "sectionDiv";
+
+  //Create Section placeholder
+  const sectionTitle = document.createElement("p");
+  sectionTitle.textContent = "The selected user’s agenda is displayed below :";
+  userAgendaSection.appendChild(sectionTitle);
+  //Add Agenda Section to Body
+  document.body.appendChild(userAgendaSection);
+
+  //Agenda Content
+  const agendaContent=document.createElement("div");
+  agendaContent.id = "agendaContent";
+  agendaContent.textContent = "No user is currently selected ! ";
+  userAgendaSection.appendChild(agendaContent);
+
+  //when userId changes 
+  selectUserElm.addEventListener("change",function(){
+    const selectedUserId=this.value;
+    const userAgenda=getData(selectedUserId);
+    if (!userAgenda || userAgenda.length === 0) {
+      agendaContent.textContent = `There is no information available for  user ${selectedUserId}. `;
+    } else {
+      agendaContent.textContent = `${selectedUserId} agenda is displayed below : `;
+    }
+
+  })
 };
