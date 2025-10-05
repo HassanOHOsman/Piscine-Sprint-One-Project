@@ -8,5 +8,27 @@ import { getUserIds } from "./common.mjs";
 
 window.onload = function () {
   const users = getUserIds();
-  document.querySelector("body").innerText = `There are ${users.length} users`;
+  //document.querySelector("body").innerText = `There are ${users.length} users`;
+
+  //create user drop-down list
+  const selectUserElm = document.createElement("select");
+  selectUserElm.id = "userSelect";
+  document.body.appendChild(selectUserElm);
+
+  //create user-select placeholder
+  const userSelectPlaceHolder = document.createElement("option");
+  userSelectPlaceHolder.value = "";
+  userSelectPlaceHolder.textContent = "Select a User :";
+  userSelectPlaceHolder.disabled = true;
+  userSelectPlaceHolder.selected = true;
+  selectUserElm.appendChild(userSelectPlaceHolder);
+
+  //create user-select options
+
+  users.forEach((number, index) => {
+    const selectOption = document.createElement("option");
+    selectOption.value = index + 1;
+    selectOption.innerText = `User ${index + 1}`;
+    selectUserElm.appendChild(selectOption);
+  });
 };
