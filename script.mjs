@@ -4,12 +4,20 @@
 // Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
 // You can't open the index.html file using a file:// URL.
 
+
 import { getUserIds } from "./common.mjs";
 import { getData } from "./storage.mjs";
+import { addData } from "./storage.mjs";
+import { clearData } from "./storage.mjs";
+
 
 window.onload = function () {
   const users = getUserIds();
   //document.querySelector("body").innerText = `There are ${users.length} users`;
+
+  
+  addTestData();
+  console.log(getData("1"));
 
   //create user drop-down list
   const selectUserElm = document.createElement("select");
@@ -59,8 +67,29 @@ window.onload = function () {
     if (!userAgenda || userAgenda.length === 0) {
       agendaContent.textContent = `There is no information available for  user ${selectedUserId}. `;
     } else {
-      agendaContent.textContent = `${selectedUserId} agenda is displayed below : `;
+      agendaContent.textContent = `User ${selectedUserId} agenda is displayed below : `;
+      showUserAgenda(selectedUserId);
     }
 
   })
+  function addTestData(){
+    clearData("1");
+    //Add data for sample and test
+    addData("1", [
+      { topic: "Test Topic", date: "2026-07-26" },
+      { topic: "Test Topic", date: "2026-08-19" },
+    ]);
+  } 
+
+  function showUserAgenda(userId){
+    const agendaArray=getData(userId);
+    const agendaUl=document.createElement("ul");
+    agendaArray.forEach(item =>{
+      const agendaLi=document.createElement("li");
+      agendaLi.textContent=`${item.topic} - ${item.date} `
+      agendaUl.appendChild(agendaLi);
+    });
+    agendaContent.appendChild(agendaUl);
+
+  };
 };
