@@ -98,3 +98,7 @@ window.onload = function () {
 const form = document.createElement("form");
 document.body.append(form);
 
+//create div to hold form components
+const div = document.createElement("div");
+form.append(div);
+
