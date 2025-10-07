@@ -102,3 +102,15 @@ document.body.append(form);
 const div = document.createElement("div");
 form.append(div);
 
+//create text area for the topics
+const textInput = document.createElement("input");
+textInput.type = "text";
+textInput.placeholder = "Enter a Topic";
+div.append(textInput);
+
+//create date picker
+const datePicker = document.createElement("input");
+datePicker.type = "date";
+div.append(datePicker);
+
+
