@@ -113,6 +113,14 @@ window.onload = function () {
   const today = new Date().toISOString().split("T")[0];
   datePicker.min = today;
 
+  // set validation for date picker to ensure user picks a date before submitting the form
+  form.addEventListener("submit", function (event) {
+    if (!datePicker.value) {
+      event.preventDefault();
+      alert("You must pick a date before submitting")
+    }
+  })
+
 
   //create submit button
   const submitBtn = document.createElement("button");
