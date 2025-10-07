@@ -105,8 +105,14 @@ window.onload = function () {
 
   //create date picker
   const datePicker = document.createElement("input");
+  datePicker.id ="date-picker";
   datePicker.type = "date";
   div.append(datePicker);
+
+  // prevent past dates from being selected - select from today's date onwards
+  const today = new Date().toISOString().split("T")[0];
+  datePicker.min = today;
+
 
   //create submit button
   const submitBtn = document.createElement("button");
