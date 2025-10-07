@@ -103,9 +103,17 @@ window.onload = function () {
   textInput.placeholder = "Enter a Topic";
   div.append(textInput);
 
+  // set validation for topic input to ensure user enters text before submitting the form
+  form.addEventListener("submit", function(event) {
+    if (!textInput.value) {
+      event.preventDefault();
+      alert("You must enter a topic name before submitting the form!");
+    }
+  })
+
   //create date picker
   const datePicker = document.createElement("input");
-  datePicker.id ="date-picker";
+  datePicker.id = "date-picker";
   datePicker.type = "date";
   div.append(datePicker);
 
@@ -117,10 +125,9 @@ window.onload = function () {
   form.addEventListener("submit", function (event) {
     if (!datePicker.value) {
       event.preventDefault();
-      alert("You must pick a date before submitting")
+      alert("You must pick a date before submitting the form!");
     }
-  })
-
+  });
 
   //create submit button
   const submitBtn = document.createElement("button");
