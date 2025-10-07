@@ -93,3 +93,8 @@ window.onload = function () {
 
   };
 };
+
+//create form
+const form = document.createElement("form");
+document.body.append(form);
+
