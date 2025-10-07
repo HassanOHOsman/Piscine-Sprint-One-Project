@@ -13,8 +13,7 @@ import { clearData } from "./storage.mjs";
 
 window.onload = function () {
   const users = getUserIds();
- 
-  
+
   addTestData();
   console.log(getData("1"));
 
@@ -54,68 +53,65 @@ window.onload = function () {
   document.body.appendChild(userAgendaSection);
 
   //Agenda Content
-  const agendaContent=document.createElement("div");
+  const agendaContent = document.createElement("div");
   agendaContent.id = "agendaContent";
   agendaContent.textContent = "No user is currently selected ! ";
   userAgendaSection.appendChild(agendaContent);
 
-  //when userId changes 
-  selectUserElm.addEventListener("change",function(){
-    const selectedUserId=this.value;
-    const userAgenda=getData(selectedUserId);
+  //when userId changes
+  selectUserElm.addEventListener("change", function () {
+    const selectedUserId = this.value;
+    const userAgenda = getData(selectedUserId);
     if (!userAgenda || userAgenda.length === 0) {
       agendaContent.textContent = `There is no information available for  user ${selectedUserId}. `;
     } else {
       agendaContent.textContent = `User ${selectedUserId} agenda is displayed below : `;
       showUserAgenda(selectedUserId);
     }
-
-  })
-  function addTestData(){
+  });
+  function addTestData() {
     clearData("1");
     //Add data for sample and test
     addData("1", [
       { topic: "Test Topic", date: "2026-07-26" },
       { topic: "Test Topic", date: "2026-08-19" },
     ]);
-  } 
+  }
 
-  function showUserAgenda(userId){
-    const agendaArray=getData(userId);
+  function showUserAgenda(userId) {
+    const agendaArray = getData(userId);
     agendaContent.innerHTML = "";
-    const agendaUl=document.createElement("ul");
-    agendaArray.forEach(item =>{
-      const agendaLi=document.createElement("li");
-      agendaLi.textContent=`${item.topic} - ${item.date} `
+    const agendaUl = document.createElement("ul");
+    agendaArray.forEach((item) => {
+      const agendaLi = document.createElement("li");
+      agendaLi.textContent = `${item.topic} - ${item.date} `;
       agendaUl.appendChild(agendaLi);
     });
     agendaContent.appendChild(agendaUl);
+  }
+  //create form
+  const form = document.createElement("form");
+  document.body.append(form);
 
-  };
+  //create div to hold form components
+  const div = document.createElement("div");
+  form.append(div);
+
+  //create text area for the topics
+  const textInput = document.createElement("input");
+  textInput.type = "text";
+  textInput.placeholder = "Enter a Topic";
+  div.append(textInput);
+
+  //create date picker
+  const datePicker = document.createElement("input");
+  datePicker.type = "date";
+  div.append(datePicker);
+
+  //create submit button
+  const submitBtn = document.createElement("button");
+  submitBtn.textContent = "submit";
+  div.append(submitBtn);
 };
-
-//create form
-const form = document.createElement("form");
-document.body.append(form);
-
-//create div to hold form components
-const div = document.createElement("div");
-form.append(div);
-
-//create text area for the topics
-const textInput = document.createElement("input");
-textInput.type = "text";
-textInput.placeholder = "Enter a Topic";
-div.append(textInput);
-
-//create date picker
-const datePicker = document.createElement("input");
-datePicker.type = "date";
-div.append(datePicker);
-
-//create submit button
-const submitBtn = document.createElement("button");
-submitBtn.textContent = "submit";
-div.append(submitBtn);
 
 
