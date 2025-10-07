@@ -13,8 +13,7 @@ import { clearData } from "./storage.mjs";
 
 window.onload = function () {
   const users = getUserIds();
-  //document.querySelector("body").innerText = `There are ${users.length} users`;
-
+ 
   
   addTestData();
   console.log(getData("1"));
@@ -35,10 +34,10 @@ window.onload = function () {
 
   //create user-select options
 
-  users.forEach((number, index) => {
+  users.forEach((id) => {
     const selectOption = document.createElement("option");
-    selectOption.value = index + 1;
-    selectOption.innerText = `User ${index + 1}`;
+    selectOption.value = id;
+    selectOption.innerText = `User ${id}`;
     selectUserElm.appendChild(selectOption);
   });
 
@@ -83,6 +82,7 @@ window.onload = function () {
 
   function showUserAgenda(userId){
     const agendaArray=getData(userId);
+    agendaContent.innerHTML = "";
     const agendaUl=document.createElement("ul");
     agendaArray.forEach(item =>{
       const agendaLi=document.createElement("li");
