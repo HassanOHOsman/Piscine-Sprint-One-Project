@@ -113,4 +113,9 @@ const datePicker = document.createElement("input");
 datePicker.type = "date";
 div.append(datePicker);
 
+//create submit button
+const submitBtn = document.createElement("button");
+submitBtn.textContent = "submit";
+div.append(submitBtn);
+
 
