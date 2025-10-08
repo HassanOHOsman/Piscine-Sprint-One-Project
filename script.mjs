@@ -13,8 +13,7 @@ import { clearData } from "./storage.mjs";
 
 window.onload = function () {
   const users = getUserIds();
- 
-  
+
   addTestData();
   console.log(getData("1"));
 
@@ -54,42 +53,68 @@ window.onload = function () {
   document.body.appendChild(userAgendaSection);
 
   //Agenda Content
-  const agendaContent=document.createElement("div");
+  const agendaContent = document.createElement("div");
   agendaContent.id = "agendaContent";
   agendaContent.textContent = "No user is currently selected ! ";
   userAgendaSection.appendChild(agendaContent);
 
-  //when userId changes 
-  selectUserElm.addEventListener("change",function(){
-    const selectedUserId=this.value;
-    const userAgenda=getData(selectedUserId);
+  //when userId changes
+  selectUserElm.addEventListener("change", function () {
+    const selectedUserId = this.value;
+    const userAgenda = getData(selectedUserId);
     if (!userAgenda || userAgenda.length === 0) {
       agendaContent.textContent = `There is no information available for  user ${selectedUserId}. `;
     } else {
       agendaContent.textContent = `User ${selectedUserId} agenda is displayed below : `;
       showUserAgenda(selectedUserId);
     }
-
-  })
-  function addTestData(){
+  });
+  function addTestData() {
     clearData("1");
     //Add data for sample and test
     addData("1", [
       { topic: "Test Topic", date: "2026-07-26" },
       { topic: "Test Topic", date: "2026-08-19" },
     ]);
-  } 
+  }
 
-  function showUserAgenda(userId){
-    const agendaArray=getData(userId);
+  function showUserAgenda(userId) {
+    const agendaArray = getData(userId);
     agendaContent.innerHTML = "";
-    const agendaUl=document.createElement("ul");
-    agendaArray.forEach(item =>{
-      const agendaLi=document.createElement("li");
-      agendaLi.textContent=`${item.topic} - ${item.date} `
+    const agendaUl = document.createElement("ul");
+    agendaArray.forEach((item) => {
+      const agendaLi = document.createElement("li");
+      agendaLi.textContent = `${item.topic} - ${item.date} `;
       agendaUl.appendChild(agendaLi);
     });
     agendaContent.appendChild(agendaUl);
+  }
+  // This function calculates revision dates for a given date.
+  // Input: a Date object (selectedDate).
+  // Output: an array of Date objects for 1 week, 1 month, 3 months, 6 months, and 1 year after the input date.
 
-  };
+  function calculateRevisionDate(selectedDate) {
+    const revisionDateArray = [];
+    //one week later
+    const onWeek = new Date(selectedDate);
+    onWeek.setDate(onWeek.getDate() + 7);
+    revisionDateArray.push(onWeek.toLocaleDateString());
+    //One Month Later
+    const oneMonth = new Date(selectedDate);
+    oneMonth.setMonth(selectedDate.getMonth() + 1);
+    revisionDateArray.push(oneMonth.toLocaleDateString());
+    //Three Month Later
+    const threeMonth = new Date(selectedDate);
+    threeMonth.setMonth(selectedDate.getMonth() + 3);
+    revisionDateArray.push(threeMonth.toLocaleDateString());
+    //Six Month Later
+    const sixMonth = new Date(selectedDate);
+    sixMonth.setMonth(selectedDate.getMonth() + 6);
+    revisionDateArray.push(sixMonth.toLocaleDateString());
+    //One Year
+    const oneYear = new Date(selectedDate);
+    oneYear.setFullYear(selectedDate.getFullYear() + 1);
+    revisionDateArray.push(oneYear.toLocaleDateString());
+    return revisionDateArray;
+  }
 };
