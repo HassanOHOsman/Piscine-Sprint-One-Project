@@ -18,26 +18,26 @@ window.onload = function () {
   console.log(getData("1"));
 
   //create user drop-down list
-  const selectUserElm = document.createElement("select");
-  selectUserElm.id = "userSelect";
+  const userMenu = document.createElement("select");
+  userMenu.id = "userSelect";
   //Add user drop-down list to Body
-  document.body.appendChild(selectUserElm);
+  document.body.appendChild(userMenu);
 
   //create user-select placeholder
-  const userSelectPlaceHolder = document.createElement("option");
-  userSelectPlaceHolder.value = "";
-  userSelectPlaceHolder.textContent = "Select a User :";
-  userSelectPlaceHolder.disabled = true;
-  userSelectPlaceHolder.selected = true;
-  selectUserElm.appendChild(userSelectPlaceHolder);
+  const placeholderOption = document.createElement("option");
+  placeholderOption.value = "";
+  placeholderOption.textContent = "Select a User :";
+  placeholderOption.disabled = true;
+  placeholderOption.selected = true;
+  userMenu.appendChild(placeholderOption);
 
   //create user-select options
 
   users.forEach((id) => {
-    const selectOption = document.createElement("option");
-    selectOption.value = id;
-    selectOption.innerText = `User ${id}`;
-    selectUserElm.appendChild(selectOption);
+    const userOption = document.createElement("option");
+    userOption.value = id;
+    userOption.innerText = `User ${id}`;
+    userMenu.appendChild(userOption);
   });
 
   //Create User Agenda Section
@@ -59,7 +59,7 @@ window.onload = function () {
   userAgendaSection.appendChild(agendaContent);
 
   //when userId changes
-  selectUserElm.addEventListener("change", function () {
+  userMenu.addEventListener("change", function () {
     const selectedUserId = this.value;
     const userAgenda = getData(selectedUserId);
     if (!userAgenda || userAgenda.length === 0) {
@@ -108,6 +108,11 @@ window.onload = function () {
     if (!textInput.value.trim()) {
       event.preventDefault();
       alert("You must enter a topic name before submitting the form!");
+    }
+    if (!userMenu.value) {
+      // Make sure that a user ID is selected before submitting the form.
+      event.preventDefault();
+      alert("Please select a user!");
     }
   })
 
