@@ -168,6 +168,8 @@ window.onload = function () {
   submitBtn.textContent = "submit";
   div.append(submitBtn);
 
+  // store new data and display full agenda (including addition) when a user is selected
+
   form.addEventListener("submit", function(event) {
     if (event.defaultPrevented) return;
 
