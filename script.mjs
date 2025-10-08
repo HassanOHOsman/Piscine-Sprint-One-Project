@@ -14,8 +14,8 @@ import { clearData } from "./storage.mjs";
 window.onload = function () {
   const users = getUserIds();
 
-  addTestData();
-  console.log(getData("1"));
+  // addTestData();
+  // console.log(getData("1"));
 
   //create user drop-down list
   const userMenu = document.createElement("select");
@@ -167,6 +167,21 @@ window.onload = function () {
   submitBtn.type = "submit";
   submitBtn.textContent = "submit";
   div.append(submitBtn);
+
+  form.addEventListener("submit", function(event) {
+    if (event.defaultPrevented) return;
+
+    const userId = userMenu.value;
+    const topic = textInput.value.trim();
+    const date = datePicker.value;
+
+    addData(userId, [{topic, date}]);
+
+    textInput.value = "";
+    datePicker.value = new Date().toISOString().split("T")[0];
+
+    showUserAgenda(userId);
+  })
 };
 
 
