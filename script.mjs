@@ -120,8 +120,8 @@ window.onload = function () {
   // set date picker to default to today's date on first page load
   const today = new Date().toISOString().split("T")[0];
   datePicker.value = today;
-  today.selected = true;
-  // datePicker.min = today;
+  
+  
 
   // set validation for date picker to ensure user picks a date before submitting the form
   form.addEventListener("submit", function (event) {
@@ -133,6 +133,7 @@ window.onload = function () {
 
   //create submit button
   const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
   submitBtn.textContent = "submit";
   div.append(submitBtn);
 };
