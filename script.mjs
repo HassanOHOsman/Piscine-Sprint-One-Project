@@ -96,9 +96,9 @@ window.onload = function () {
   function calculateRevisionDate(selectedDate) {
     const revisionDateArray = [];
     //one week later
-    const onWeek = new Date(selectedDate);
-    onWeek.setDate(onWeek.getDate() + 7);
-    revisionDateArray.push(onWeek.toLocaleDateString());
+    const oneWeek = new Date(selectedDate);
+    oneWeek.setDate(selectedDate.getDate() + 7);
+    revisionDateArray.push(oneWeek.toLocaleDateString());
     //One Month Later
     const oneMonth = new Date(selectedDate);
     oneMonth.setMonth(selectedDate.getMonth() + 1);
