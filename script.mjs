@@ -18,26 +18,26 @@ window.onload = function () {
   console.log(getData("1"));
 
   //create user drop-down list
-  const selectUserElm = document.createElement("select");
-  selectUserElm.id = "userSelect";
+  const userMenu = document.createElement("select");
+  userMenu.id = "userSelect";
   //Add user drop-down list to Body
-  document.body.appendChild(selectUserElm);
+  document.body.appendChild(userMenu);
 
   //create user-select placeholder
-  const userSelectPlaceHolder = document.createElement("option");
-  userSelectPlaceHolder.value = "";
-  userSelectPlaceHolder.textContent = "Select a User :";
-  userSelectPlaceHolder.disabled = true;
-  userSelectPlaceHolder.selected = true;
-  selectUserElm.appendChild(userSelectPlaceHolder);
+  const placeholderOption = document.createElement("option");
+  placeholderOption.value = "";
+  placeholderOption.textContent = "Select a User :";
+  placeholderOption.disabled = true;
+  placeholderOption.selected = true;
+  userMenu.appendChild(placeholderOption);
 
   //create user-select options
 
   users.forEach((id) => {
-    const selectOption = document.createElement("option");
-    selectOption.value = id;
-    selectOption.innerText = `User ${id}`;
-    selectUserElm.appendChild(selectOption);
+    const userOption = document.createElement("option");
+    userOption.value = id;
+    userOption.innerText = `User ${id}`;
+    userMenu.appendChild(userOption);
   });
 
   //Create User Agenda Section
@@ -58,8 +58,8 @@ window.onload = function () {
   agendaContent.textContent = "No user is currently selected ! ";
   userAgendaSection.appendChild(agendaContent);
 
-  //when userId changes
-  selectUserElm.addEventListener("change", function () {
+  //when userId changes 
+  userMenu.addEventListener("change", function () {
     const selectedUserId = this.value;
     const userAgenda = getData(selectedUserId);
     if (!userAgenda || userAgenda.length === 0) {
@@ -89,32 +89,58 @@ window.onload = function () {
     });
     agendaContent.appendChild(agendaUl);
   }
-  // This function calculates revision dates for a given date.
-  // Input: a Date object (selectedDate).
-  // Output: an array of Date objects for 1 week, 1 month, 3 months, 6 months, and 1 year after the input date.
+  //create form
+  const form = document.createElement("form");
+  document.body.append(form);
 
-  function calculateRevisionDate(selectedDate) {
-    const revisionDateArray = [];
-    //one week later
-    const oneWeek = new Date(selectedDate);
-    oneWeek.setDate(selectedDate.getDate() + 7);
-    revisionDateArray.push(oneWeek.toLocaleDateString());
-    //One Month Later
-    const oneMonth = new Date(selectedDate);
-    oneMonth.setMonth(selectedDate.getMonth() + 1);
-    revisionDateArray.push(oneMonth.toLocaleDateString());
-    //Three Month Later
-    const threeMonth = new Date(selectedDate);
-    threeMonth.setMonth(selectedDate.getMonth() + 3);
-    revisionDateArray.push(threeMonth.toLocaleDateString());
-    //Six Month Later
-    const sixMonth = new Date(selectedDate);
-    sixMonth.setMonth(selectedDate.getMonth() + 6);
-    revisionDateArray.push(sixMonth.toLocaleDateString());
-    //One Year
-    const oneYear = new Date(selectedDate);
-    oneYear.setFullYear(selectedDate.getFullYear() + 1);
-    revisionDateArray.push(oneYear.toLocaleDateString());
-    return revisionDateArray;
-  }
+  //create div to hold form components
+  const div = document.createElement("div");
+  form.append(div);
+
+  //create text area for the topics
+  const textInput = document.createElement("input");
+  textInput.type = "text";
+  textInput.placeholder = "Enter a Topic";
+  div.append(textInput);
+
+  // set validation for topic input to ensure user enters a valid text before submitting the form
+  form.addEventListener("submit", function(event) {
+    if (!textInput.value.trim()) {
+      event.preventDefault();
+      alert("You must enter a topic name before submitting the form!");
+    }
+    if (!userMenu.value) {
+      // Make sure that a user ID is selected before submitting the form.
+      event.preventDefault();
+      alert("Please select a user!");
+    }
+  })
+
+  //create date picker
+  const datePicker = document.createElement("input");
+  datePicker.id = "date-picker";
+  datePicker.type = "date";
+  div.append(datePicker);
+
+  // set date picker to default to today's date on first page load
+  const today = new Date().toISOString().split("T")[0];
+  datePicker.value = today;
+  
+  
+
+  // set validation for date picker to ensure user picks a date before submitting the form
+  form.addEventListener("submit", function (event) {
+    if (!datePicker.value) {
+      event.preventDefault();
+      alert("You must pick a date before submitting the form!");
+    }
+  });
+
+  //create submit button
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.textContent = "submit";
+  div.append(submitBtn);
 };
+
+
