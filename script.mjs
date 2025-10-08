@@ -103,9 +103,9 @@ window.onload = function () {
   textInput.placeholder = "Enter a Topic";
   div.append(textInput);
 
-  // set validation for topic input to ensure user enters text before submitting the form
+  // set validation for topic input to ensure user enters a valid text before submitting the form
   form.addEventListener("submit", function(event) {
-    if (!textInput.value) {
+    if (!textInput.value.trim()) {
       event.preventDefault();
       alert("You must enter a topic name before submitting the form!");
     }
