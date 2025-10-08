@@ -117,9 +117,11 @@ window.onload = function () {
   datePicker.type = "date";
   div.append(datePicker);
 
-  // prevent past dates from being selected - select from today's date onwards
+  // set date picker to default to today's date on first page load
   const today = new Date().toISOString().split("T")[0];
-  datePicker.min = today;
+  datePicker.value = today;
+  today.selected = true;
+  // datePicker.min = today;
 
   // set validation for date picker to ensure user picks a date before submitting the form
   form.addEventListener("submit", function (event) {
