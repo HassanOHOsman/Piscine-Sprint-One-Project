@@ -17,7 +17,7 @@ window.onload = function () {
   const users = getUserIds();
 
   //clear stored agenda so users start with a clear state
-  if(!localStorage.getItem("app-initialized")) {
+  if (!localStorage.getItem("app-initialized")) {
     users.forEach((id) => clearData(id));
     localStorage.setItem("app-initialized", "true");
   }
@@ -70,7 +70,7 @@ window.onload = function () {
   agendaContent.textContent = "No user is currently selected ! ";
   userAgendaSection.appendChild(agendaContent);
 
-  //when userId changes 
+  //when userId changes
   userMenu.addEventListener("change", function () {
     const selectedUserId = this.value;
     const userAgenda = getData(selectedUserId);
@@ -91,24 +91,25 @@ window.onload = function () {
   }
 
   function showUserAgenda(userId) {
-   const agendaArray = getData(userId);
+    const agendaArray = getData(userId);
 
-   // Sort agenda by date ascending
-   agendaArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Sort agenda by date ascending
+    agendaArray.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     agendaContent.innerHTML = "";
     const agendaUl = document.createElement("ul");
 
     agendaArray.forEach((item) => {
-     const agendaLi = document.createElement("li");
-     agendaLi.textContent = `${item.topic} - ${new Date(item.date).toLocaleDateString()}`;
-     agendaUl.appendChild(agendaLi);
+      const agendaLi = document.createElement("li");
+      agendaLi.textContent = `${item.topic} - ${new Date(
+        item.date
+      ).toLocaleDateString()}`;
+      agendaUl.appendChild(agendaLi);
     });
 
-  agendaContent.appendChild(agendaUl);
+    agendaContent.appendChild(agendaUl);
   }
 
-  
   //create form
   const form = document.createElement("form");
   document.body.append(form);
@@ -117,23 +118,23 @@ window.onload = function () {
   const div = document.createElement("div");
   form.append(div);
 
+  //create label for text input area
+  const topicLabel = document.createElement("label");
+  topicLabel.setAttribute("for", "topicInput");
+  topicLabel.textContent = "Enter a topic";
+  
   //create text area for the topics
   const textInput = document.createElement("input");
   textInput.type = "text";
   textInput.id = "topicInput";
   textInput.placeholder = "Enter a Topic";
 
-  //create label for text input area
-  const topicLabel = document.createElement("label");
-  topicLabel.setAttribute("for", "topicInput");
-  topicLabel.textContent = "Enter a topic";
-
   //append the text input label and the text input tag
   div.append(topicLabel);
   div.append(textInput);
 
   // set validation for topic input to ensure user enters a valid text before submitting the form
-  form.addEventListener("submit", function(event) {
+  form.addEventListener("submit", function (event) {
     if (!textInput.value.trim()) {
       event.preventDefault();
       alert("You must enter a topic name before submitting the form!");
@@ -143,13 +144,13 @@ window.onload = function () {
       event.preventDefault();
       alert("Please select a user!");
     }
-  })
+  });
 
   //create label for date picker
   const dateLabel = document.createElement("label");
   dateLabel.setAttribute("for", "date-picker");
   dateLabel.textContent = "Pick a date";
-  
+
   //create date picker
   const datePicker = document.createElement("input");
   datePicker.id = "date-picker";
@@ -162,8 +163,6 @@ window.onload = function () {
   // set date picker to default to today's date on first page load
   const today = new Date().toISOString().split("T")[0];
   datePicker.value = today;
-  
-  
 
   // set validation for date picker to ensure user picks a date before submitting the form
   form.addEventListener("submit", function (event) {
@@ -181,33 +180,33 @@ window.onload = function () {
 
   // store new data and display full agenda (including addition) when a user is selected
 
- form.addEventListener("submit", function(event) {
-  event.preventDefault();
-    
-  const userId = userMenu.value;
-  const topic = textInput.value.trim();
-  const date = new Date(datePicker.value);
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-  // Get calculated revision dates
-  const revisionDates = calculateRevisionDate(date);
+    const userId = userMenu.value;
+    const topic = textInput.value.trim();
+    const date = new Date(datePicker.value);
 
-  // Only include revision dates that are today or in the future
-  const today = new Date();
-  const agendaItems = revisionDates
-    .map(dateStr => {
-      const revDate = new Date(dateStr);
-      return revDate >= today ? { topic, date: dateStr } : null;
-    })
-    .filter(Boolean); // remove nulls
+    // Get calculated revision dates
+    const revisionDates = calculateRevisionDate(date);
 
-  // Add to user data
-  addData(userId, agendaItems);
+    // Only include revision dates that are today or in the future
+    const today = new Date();
+    const agendaItems = revisionDates
+      .map((dateStr) => {
+        const revDate = new Date(dateStr);
+        return revDate >= today ? { topic, date: dateStr } : null;
+      })
+      .filter(Boolean); // remove nulls
 
-  // Reset form
-  textInput.value = "";
-  datePicker.value = new Date().toISOString().split("T")[0];
+    // Add to user data
+    addData(userId, agendaItems);
 
-  // Show updated agenda
-  showUserAgenda(userId);
-});
+    // Reset form
+    textInput.value = "";
+    datePicker.value = new Date().toISOString().split("T")[0];
+
+    // Show updated agenda
+    showUserAgenda(userId);
+  });
 };
