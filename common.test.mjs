@@ -17,5 +17,5 @@ test("calculateRevisionDate returns correct future dates", () => {
     new Date("2027-07-01").toLocaleDateString(),
   ];
   const revisionDates = calculateRevisionDate(selectedDate);
-  assert.equal(revisionDates,expectedDates);
+  assert.deepStrictEqual(revisionDates,expectedDates);
 });
