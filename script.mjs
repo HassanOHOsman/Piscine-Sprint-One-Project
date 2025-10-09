@@ -170,20 +170,35 @@ window.onload = function () {
 
   // store new data and display full agenda (including addition) when a user is selected
 
-  form.addEventListener("submit", function(event) {
-    if (event.defaultPrevented) return;
+ form.addEventListener("submit", function(event) {
+  if (event.defaultPrevented) return;
 
-    const userId = userMenu.value;
-    const topic = textInput.value.trim();
-    const date = datePicker.value;
+  const userId = userMenu.value;
+  const topic = textInput.value.trim();
+  const date = new Date(datePicker.value);
 
-    addData(userId, [{topic, date}]);
+  // Get calculated revision dates
+  const revisionDates = calculateRevisionDate(date);
 
-    textInput.value = "";
-    datePicker.value = new Date().toISOString().split("T")[0];
+  // Only include revision dates that are today or in the future
+  const today = new Date();
+  const agendaItems = revisionDates
+    .map(dateStr => {
+      const revDate = new Date(dateStr);
+      return revDate >= today ? { topic, date: dateStr } : null;
+    })
+    .filter(Boolean); // remove nulls
 
-    showUserAgenda(userId);
-  })
+  // Add to user data
+  addData(userId, agendaItems);
+
+  // Reset form
+  textInput.value = "";
+  datePicker.value = new Date().toISOString().split("T")[0];
+
+  // Show updated agenda
+  showUserAgenda(userId);
+});
 };
 
 
