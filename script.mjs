@@ -145,10 +145,18 @@ window.onload = function () {
     }
   })
 
+  //create label for date picker
+  const dateLabel = document.createElement("label");
+  dateLabel.setAttribute("for", "date-picker");
+  dateLabel.textContent = "Pick a date";
+  
   //create date picker
   const datePicker = document.createElement("input");
   datePicker.id = "date-picker";
   datePicker.type = "date";
+
+  //append both date label and date picker tag to the div
+  div.append(dateLabel);
   div.append(datePicker);
 
   // set date picker to default to today's date on first page load
