@@ -9,6 +9,8 @@ import { getUserIds } from "./common.mjs";
 import { getData } from "./storage.mjs";
 import { addData } from "./storage.mjs";
 import { clearData } from "./storage.mjs";
+import { calculateRevisionDate } from "./common.mjs";
+
 
 
 window.onload = function () {
@@ -100,31 +102,7 @@ window.onload = function () {
   agendaContent.appendChild(agendaUl);
   }
 
-  function calculateRevisionDate(selectedDate) {
-    const revisionDateArray = [];
-    //one week later
-    const oneWeek = new Date(selectedDate);
-    oneWeek.setDate(selectedDate.getDate() + 7);
-    revisionDateArray.push(oneWeek.toISOString().split("T")[0]);
-    //One Month Later
-    const oneMonth = new Date(selectedDate);
-    oneMonth.setMonth(selectedDate.getMonth() + 1);
-    revisionDateArray.push(oneMonth.toISOString().split("T")[0]);
-    //Three Month Later
-    const threeMonth = new Date(selectedDate);
-    threeMonth.setMonth(selectedDate.getMonth() + 3);
-    revisionDateArray.push(threeMonth.toISOString().split("T")[0]);
-    //Six Month Later
-    const sixMonth = new Date(selectedDate);
-    sixMonth.setMonth(selectedDate.getMonth() + 6);
-    revisionDateArray.push(sixMonth.toISOString().split("T")[0]);
-    //One Year
-    const oneYear = new Date(selectedDate);
-    oneYear.setFullYear(selectedDate.getFullYear() + 1);
-    revisionDateArray.push(oneYear.toISOString().split("T")[0]);
-    return revisionDateArray;
-  }
-
+  
   //create form
   const form = document.createElement("form");
   document.body.append(form);
