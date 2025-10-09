@@ -20,6 +20,7 @@ window.onload = function () {
   if(!localStorage.getItem("app-initialized")) {
     users.forEach((id) => clearData(id));
     localStorage.setItem("app-initialized", "true");
+  }
 
   // label for user menu
   const userLabel = document.createElement("label");
@@ -29,7 +30,7 @@ window.onload = function () {
   //create user drop-down list
   const userMenu = document.createElement("select");
   userMenu.id = "userSelect";
-  
+
   //Add user label and user drop-down list to Body
   document.body.appendChild(userLabel);
   document.body.appendChild(userMenu);
@@ -119,7 +120,16 @@ window.onload = function () {
   //create text area for the topics
   const textInput = document.createElement("input");
   textInput.type = "text";
+  textInput.id = "topicInput";
   textInput.placeholder = "Enter a Topic";
+
+  //create label for text input area
+  const topicLabel = document.createElement("label");
+  topicLabel.setAttribute("for", "topicInput");
+  topicLabel.textContent = "Enter a topic";
+
+  //append the text input label and the text input tag
+  div.append(topicLabel);
   div.append(textInput);
 
   // set validation for topic input to ensure user enters a valid text before submitting the form
@@ -193,5 +203,3 @@ window.onload = function () {
   showUserAgenda(userId);
 });
 };
-
-
