@@ -14,8 +14,12 @@ import { clearData } from "./storage.mjs";
 window.onload = function () {
   const users = getUserIds();
 
-  // addTestData();
-  // console.log(getData("1"));
+  //clear stored agenda so users start with a clear state
+  if(!localStorage.getItem("app-initialized")) {
+    users.forEach((id) => clearData(id));
+    localStorage.setItem("app-initialized", "true");
+  }
+
 
   //create user drop-down list
   const userMenu = document.createElement("select");
