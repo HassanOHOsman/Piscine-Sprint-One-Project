@@ -19,3 +19,42 @@ test("calculateRevisionDate returns correct future dates", () => {
   const revisionDates = calculateRevisionDate(selectedDate);
   assert.deepStrictEqual(revisionDates,expectedDates);
 });
+//end of month
+test("calculateRevisionDate returns correct future dates", () => {
+  const selectedDate = new Date("2026-01-31");
+  const expectedDates = [
+    new Date("2/7/2026").toLocaleDateString(),
+    new Date("3/3/2026").toLocaleDateString(),
+    new Date("5/1/2026").toLocaleDateString(),
+    new Date("7/31/2026").toLocaleDateString(),
+    new Date("1/31/2027").toLocaleDateString(),
+  ];
+  const revisionDates = calculateRevisionDate(selectedDate);
+  assert.deepStrictEqual(revisionDates, expectedDates);
+});
+//end of year
+test("calculateRevisionDate returns correct future dates", () => {
+  const selectedDate = new Date("2026-12-15");
+  const expectedDates = [
+    new Date("12/22/2026").toLocaleDateString(),
+    new Date("1/15/2027").toLocaleDateString(),
+    new Date("3/15/2027").toLocaleDateString(),
+    new Date("6/15/2027").toLocaleDateString(),
+    new Date("12/15/2027").toLocaleDateString(),
+  ];
+  const revisionDates = calculateRevisionDate(selectedDate);
+  assert.deepStrictEqual(revisionDates, expectedDates);
+});
+//Leap year
+test("calculateRevisionDate returns correct future dates", () => {
+  const selectedDate = new Date("2024-02-28");
+  const expectedDates = [
+    new Date("3/6/2024").toLocaleDateString(),
+    new Date("3/28/2024").toLocaleDateString(),
+    new Date("5/28/2024").toLocaleDateString(),
+    new Date("8/28/2024").toLocaleDateString(),
+    new Date("2/28/2025").toLocaleDateString(),
+  ];
+  const revisionDates = calculateRevisionDate(selectedDate);
+  assert.deepStrictEqual(revisionDates, expectedDates);
+});
