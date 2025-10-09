@@ -159,8 +159,8 @@ window.onload = function () {
   // store new data and display full agenda (including addition) when a user is selected
 
  form.addEventListener("submit", function(event) {
-  if (event.defaultPrevented) return;
-
+  event.preventDefault();
+    
   const userId = userMenu.value;
   const topic = textInput.value.trim();
   const date = new Date(datePicker.value);
