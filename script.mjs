@@ -16,8 +16,12 @@ import { calculateRevisionDate } from "./common.mjs";
 window.onload = function () {
   const users = getUserIds();
 
-  addTestData();
-  console.log(getData("1"));
+  //clear stored agenda so users start with a clear state
+  if(!localStorage.getItem("app-initialized")) {
+    users.forEach((id) => clearData(id));
+    localStorage.setItem("app-initialized", "true");
+  }
+
 
   //create user drop-down list
   const userMenu = document.createElement("select");
@@ -81,15 +85,21 @@ window.onload = function () {
   }
 
   function showUserAgenda(userId) {
-    const agendaArray = getData(userId);
+   const agendaArray = getData(userId);
+
+   // Sort agenda by date ascending
+   agendaArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     agendaContent.innerHTML = "";
     const agendaUl = document.createElement("ul");
+
     agendaArray.forEach((item) => {
-      const agendaLi = document.createElement("li");
-      agendaLi.textContent = `${item.topic} - ${item.date} `;
-      agendaUl.appendChild(agendaLi);
+     const agendaLi = document.createElement("li");
+     agendaLi.textContent = `${item.topic} - ${new Date(item.date).toLocaleDateString()}`;
+     agendaUl.appendChild(agendaLi);
     });
-    agendaContent.appendChild(agendaUl);
+
+  agendaContent.appendChild(agendaUl);
   }
 
   
@@ -145,6 +155,38 @@ window.onload = function () {
   submitBtn.type = "submit";
   submitBtn.textContent = "submit";
   div.append(submitBtn);
+
+  // store new data and display full agenda (including addition) when a user is selected
+
+ form.addEventListener("submit", function(event) {
+  if (event.defaultPrevented) return;
+
+  const userId = userMenu.value;
+  const topic = textInput.value.trim();
+  const date = new Date(datePicker.value);
+
+  // Get calculated revision dates
+  const revisionDates = calculateRevisionDate(date);
+
+  // Only include revision dates that are today or in the future
+  const today = new Date();
+  const agendaItems = revisionDates
+    .map(dateStr => {
+      const revDate = new Date(dateStr);
+      return revDate >= today ? { topic, date: dateStr } : null;
+    })
+    .filter(Boolean); // remove nulls
+
+  // Add to user data
+  addData(userId, agendaItems);
+
+  // Reset form
+  textInput.value = "";
+  datePicker.value = new Date().toISOString().split("T")[0];
+
+  // Show updated agenda
+  showUserAgenda(userId);
+});
 };
 
 
