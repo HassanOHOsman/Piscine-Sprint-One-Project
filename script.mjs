@@ -79,15 +79,21 @@ window.onload = function () {
   }
 
   function showUserAgenda(userId) {
-    const agendaArray = getData(userId);
+   const agendaArray = getData(userId);
+
+   // Sort agenda by date ascending
+   agendaArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     agendaContent.innerHTML = "";
     const agendaUl = document.createElement("ul");
+
     agendaArray.forEach((item) => {
-      const agendaLi = document.createElement("li");
-      agendaLi.textContent = `${item.topic} - ${item.date} `;
-      agendaUl.appendChild(agendaLi);
+     const agendaLi = document.createElement("li");
+     agendaLi.textContent = `${item.topic} - ${new Date(item.date).toLocaleDateString()}`;
+     agendaUl.appendChild(agendaLi);
     });
-    agendaContent.appendChild(agendaUl);
+
+  agendaContent.appendChild(agendaUl);
   }
 
   function calculateRevisionDate(selectedDate) {
