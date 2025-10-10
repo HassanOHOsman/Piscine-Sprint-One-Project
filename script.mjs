@@ -17,11 +17,10 @@ window.onload = function () {
   const users = getUserIds();
 
   //clear stored agenda so users start with a clear state
-  if(!localStorage.getItem("app-initialized")) {
+  if (!localStorage.getItem("app-initialized")) {
     users.forEach((id) => clearData(id));
     localStorage.setItem("app-initialized", "true");
   }
-
 
   //create user drop-down list
   const userMenu = document.createElement("select");
@@ -64,7 +63,7 @@ window.onload = function () {
   agendaContent.textContent = "No user is currently selected ! ";
   userAgendaSection.appendChild(agendaContent);
 
-  //when userId changes 
+  //when userId changes
   userMenu.addEventListener("change", function () {
     const selectedUserId = this.value;
     const userAgenda = getData(selectedUserId);
@@ -85,24 +84,25 @@ window.onload = function () {
   }
 
   function showUserAgenda(userId) {
-   const agendaArray = getData(userId);
+    const agendaArray = getData(userId);
 
-   // Sort agenda by date ascending
-   agendaArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Sort agenda by date ascending
+    agendaArray.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     agendaContent.innerHTML = "";
     const agendaUl = document.createElement("ul");
 
     agendaArray.forEach((item) => {
-     const agendaLi = document.createElement("li");
-     agendaLi.textContent = `${item.topic} - ${new Date(item.date).toLocaleDateString()}`;
-     agendaUl.appendChild(agendaLi);
+      const agendaLi = document.createElement("li");
+      agendaLi.textContent = `${item.topic} - ${new Date(
+        item.date
+      ).toLocaleDateString()}`;
+      agendaUl.appendChild(agendaLi);
     });
 
-  agendaContent.appendChild(agendaUl);
+    agendaContent.appendChild(agendaUl);
   }
 
-  
   //create form
   const form = document.createElement("form");
   document.body.append(form);
@@ -117,19 +117,6 @@ window.onload = function () {
   textInput.placeholder = "Enter a Topic";
   div.append(textInput);
 
-  // set validation for topic input to ensure user enters a valid text before submitting the form
-  form.addEventListener("submit", function(event) {
-    if (!textInput.value.trim()) {
-      event.preventDefault();
-      alert("You must enter a topic name before submitting the form!");
-    }
-    if (!userMenu.value) {
-      // Make sure that a user ID is selected before submitting the form.
-      event.preventDefault();
-      alert("Please select a user!");
-    }
-  })
-
   //create date picker
   const datePicker = document.createElement("input");
   datePicker.id = "date-picker";
@@ -139,16 +126,6 @@ window.onload = function () {
   // set date picker to default to today's date on first page load
   const today = new Date().toISOString().split("T")[0];
   datePicker.value = today;
-  
-  
-
-  // set validation for date picker to ensure user picks a date before submitting the form
-  form.addEventListener("submit", function (event) {
-    if (!datePicker.value) {
-      event.preventDefault();
-      alert("You must pick a date before submitting the form!");
-    }
-  });
 
   //create submit button
   const submitBtn = document.createElement("button");
@@ -156,37 +133,50 @@ window.onload = function () {
   submitBtn.textContent = "submit";
   div.append(submitBtn);
 
-  // store new data and display full agenda (including addition) when a user is selected
+  //Handle form submission with full validation and data update
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
 
- form.addEventListener("submit", function(event) {
-  event.preventDefault();
-    
-  const userId = userMenu.value;
-  const topic = textInput.value.trim();
-  const date = new Date(datePicker.value);
+    const userId = userMenu.value;
+    const topic = textInput.value.trim();
+    const dateValue = datePicker.value;
 
-  // Get calculated revision dates
-  const revisionDates = calculateRevisionDate(date);
+    //Validation checks
+    if (!userId) {
+      alert("Please select a user!");
+      return;
+    }
 
-  // Only include revision dates that are today or in the future
-  const today = new Date();
-  const agendaItems = revisionDates
-    .map(dateStr => {
-      const revDate = new Date(dateStr);
-      return revDate >= today ? { topic, date: dateStr } : null;
-    })
-    .filter(Boolean); // remove nulls
+    if (!topic) {
+      alert("You must enter a topic name before submitting the form!");
+      return;
+    }
 
-  // Add to user data
-  addData(userId, agendaItems);
+    if (!dateValue) {
+      alert("You must pick a date before submitting the form!");
+      return;
+    }
 
-  // Reset form
-  textInput.value = "";
-  datePicker.value = new Date().toISOString().split("T")[0];
+    const date = new Date(dateValue);
+    const revisionDates = calculateRevisionDate(date);
+    const today = new Date();
 
-  // Show updated agenda
-  showUserAgenda(userId);
-});
+    const agendaItems = revisionDates
+      .map((dateStr) => {
+        const revDate = new Date(dateStr);
+        return revDate >= today ? { topic, date: dateStr } : null;
+      })
+      .filter(Boolean);
+
+   
+    addData(userId, agendaItems);
+
+   
+    textInput.value = "";
+    datePicker.value = new Date().toISOString().split("T")[0];
+
+    showUserAgenda(userId);
+  });
 };
 
 
