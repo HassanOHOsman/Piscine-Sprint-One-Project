@@ -74,14 +74,6 @@ window.onload = function () {
       showUserAgenda(selectedUserId);
     }
   });
-  function addTestData() {
-    clearData("1");
-    //Add data for sample and test
-    addData("1", [
-      { topic: "Test Topic", date: "2026-07-26" },
-      { topic: "Test Topic", date: "2026-08-19" },
-    ]);
-  }
 
   function showUserAgenda(userId) {
     const agendaArray = getData(userId);
