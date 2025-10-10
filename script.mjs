@@ -110,10 +110,18 @@ window.onload = function () {
   const div = document.createElement("div");
   form.append(div);
 
+  //create label for text input area
+  const topicLabel = document.createElement("label");
+  topicLabel.setAttribute("for", "topicInput");
+  topicLabel.textContent = "Enter a topic";
+
   //create text area for the topics
   const textInput = document.createElement("input");
   textInput.type = "text";
   textInput.placeholder = "Enter a Topic";
+
+  //append the text input label and the text input tag
+  div.append(topicLabel);
   div.append(textInput);
 
   //create date picker
