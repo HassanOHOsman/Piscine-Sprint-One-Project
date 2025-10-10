@@ -22,10 +22,17 @@ window.onload = function () {
     localStorage.setItem("app-initialized", "true");
   }
 
+  // label for user menu
+  const userLabel = document.createElement("label");
+  userLabel.setAttribute("for", "userSelect");
+  userLabel.textContent = "Pick a user";
+
   //create user drop-down list
   const userMenu = document.createElement("select");
   userMenu.id = "userSelect";
-  //Add user drop-down list to Body
+
+  //Add user label and user drop-down list to Body
+  document.body.appendChild(userLabel);
   document.body.appendChild(userMenu);
 
   //create user-select placeholder
@@ -160,10 +167,8 @@ window.onload = function () {
       })
       .filter(Boolean);
 
-   
     addData(userId, agendaItems);
 
-   
     textInput.value = "";
     datePicker.value = new Date().toISOString().split("T")[0];
 
