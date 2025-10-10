@@ -22,10 +22,17 @@ window.onload = function () {
     localStorage.setItem("app-initialized", "true");
   }
 
+  // label for user menu
+  const userLabel = document.createElement("label");
+  userLabel.setAttribute("for", "userSelect");
+  userLabel.textContent = "Pick a user";
+
   //create user drop-down list
   const userMenu = document.createElement("select");
   userMenu.id = "userSelect";
-  //Add user drop-down list to Body
+
+  //Add user label and user drop-down list to Body
+  document.body.appendChild(userLabel);
   document.body.appendChild(userMenu);
 
   //create user-select placeholder
@@ -103,16 +110,32 @@ window.onload = function () {
   const div = document.createElement("div");
   form.append(div);
 
+  //create label for text input area
+  const topicLabel = document.createElement("label");
+  topicLabel.setAttribute("for", "topicInput");
+  topicLabel.textContent = "Enter a topic";
+
   //create text area for the topics
   const textInput = document.createElement("input");
   textInput.type = "text";
   textInput.placeholder = "Enter a Topic";
+
+  //append the text input label and the text input tag
+  div.append(topicLabel);
   div.append(textInput);
+
+  //create label for date picker
+  const dateLabel = document.createElement("label");
+  dateLabel.setAttribute("for", "date-picker");
+  dateLabel.textContent = "Pick a date";
 
   //create date picker
   const datePicker = document.createElement("input");
   datePicker.id = "date-picker";
   datePicker.type = "date";
+
+  //append both date label and date picker tag to the div
+  div.append(dateLabel);
   div.append(datePicker);
 
   // set date picker to default to today's date on first page load
@@ -160,10 +183,8 @@ window.onload = function () {
       })
       .filter(Boolean);
 
-   
     addData(userId, agendaItems);
 
-   
     textInput.value = "";
     datePicker.value = new Date().toISOString().split("T")[0];
 
